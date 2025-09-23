@@ -7,18 +7,22 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const postSignIn = () => {
+  const postSignIn = async (event) => {
+    event.preventDefault();
     try {
-      const response = axios.post("/auth/login", {
+      const response = await axios.post("/auth/login", {
         email,
         password,
       });
 
-      console.log("로그인 성공 토큰 : ", response.data);
-      localStorage.setItem("accessToken", response.data);
+      console.log("로그인 성공 토큰 : ", response.data.data);
+      localStorage.setItem("accessToken", response.data.data);
+
+      navigate("/");
     } catch (error) {
       console.log("로그인 실패", error);
       alert("로그인 실패 : 이메일 또는 비밀번호가 올바르지 않습니다.");
+      setPassword("");
     }
   };
 
@@ -41,6 +45,7 @@ export default function SignInPage() {
                   이메일
                 </label>
                 <input
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   id="email"
@@ -59,6 +64,7 @@ export default function SignInPage() {
                   비밀번호
                 </label>
                 <input
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   id="password"
