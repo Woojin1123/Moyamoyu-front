@@ -1,9 +1,29 @@
+import axios from "@/config/axiosConfig";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInPage() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const postSignIn = () => {
+    try {
+      const response = axios.post("/auth/login", {
+        email,
+        password,
+      });
+
+      console.log("로그인 성공 토큰 : ", response.data);
+      localStorage.setItem("accessToken", response.data);
+    } catch (error) {
+      console.log("로그인 실패", error);
+      alert("로그인 실패 : 이메일 또는 비밀번호가 올바르지 않습니다.");
+    }
+  };
+
   return (
-    <div className="tailwind-page min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
@@ -12,53 +32,50 @@ export default function SignInPage() {
 
           <div className="space-y-6">
             {/* 이메일 입력 */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                이메일
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
+            <form onSubmit={postSignIn} className="flex flex-col gap-2">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  이메일
+                </label>
+                <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  required
+                />
+              </div>
 
-            {/* 비밀번호 입력 */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                비밀번호
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="비밀번호"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
+              {/* 비밀번호 입력 */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  비밀번호
+                </label>
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  id="password"
+                  placeholder="비밀번호"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  required
+                />
+              </div>
 
-            {/* 비밀번호 찾기 링크 */}
-            <div className="text-right">
-              <a
-                href="#"
-                className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+              {/* 로그인 버튼 */}
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-black font-semibold"
               >
-                비밀번호를 잊으셨나요?
-              </a>
-            </div>
-
-            {/* 로그인 버튼 */}
-            <button className="w-full bg-blue-600 text-black font-semibold">
-              로그인
-            </button>
+                로그인
+              </button>
+            </form>
 
             {/* 구분선 */}
             <div className="relative my-6">
@@ -80,7 +97,7 @@ export default function SignInPage() {
             </button>
           </div>
 
-          {/* 소셜 로그인 옵션 */}
+          {/* 소셜 로그인 버튼 */}
           <div className="mt-8">
             <div className="text-center text-sm text-gray-600 mb-4">
               소셜 계정으로 로그인
