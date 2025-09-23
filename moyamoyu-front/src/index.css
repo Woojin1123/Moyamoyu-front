@@ -24,10 +24,15 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* 기존의 flex 관련 스타일 제거 또는 조건부 적용 */
   min-width: 320px;
   min-height: 100vh;
+}
+
+/* 특정 페이지에서만 중앙 정렬이 필요한 경우 */
+body.center-layout {
+  display: flex;
+  place-items: center;
 }
 
 h1 {
@@ -37,7 +42,7 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -84,4 +89,14 @@ button:focus-visible {
 
     flex: 1;
   }
+}
+
+/* Tailwind CSS 호환성을 위한 리셋 */
+.tailwind-page {
+  /* body의 flex 속성을 무시 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
