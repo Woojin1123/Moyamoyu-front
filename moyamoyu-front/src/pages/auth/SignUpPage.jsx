@@ -1,12 +1,63 @@
 import axios from "@/config/axiosConfig";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const [countdown, setCountdown] = useState(0);
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [code, setCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSignUp = async () => {
+    if (!isVerified) {
+      alert("인증을 완료해주세요.");
+      return;
+    }
+    try {
+      const response = await axios.post("/auth/signup", {
+        email,
+        password,
+        nickname,
+        role: "USER",
+        roadAddress: address,
+        detailAddress,
+        zipcode: zipCode,
+      });
+      if (response.status === 200) {
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const sendVerifyCode = async () => {
+    if (!code) {
+      console.log(code);
+      alert("코드를 입력해주세요.");
+      return;
+    }
+    try {
+      const response = await axios.post("/auth/email-verifications/confirm", {
+        email,
+        token: code,
+      });
+      if (response.status === 200) {
+        setIsVerified(true);
+      } else {
+        console.log("인증 실패 : ", response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const sendVerifyEmail = async () => {
     if (!email) {
@@ -105,12 +156,23 @@ export default function SignUpPage() {
               <input
                 type="code"
                 id="code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
                 placeholder="6자리 인증번호를 입력하세요"
+                disabled={isVerified}
                 className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
               />
-              <button className="flex-1 px-4 py-3 rounded-lg font-medium">
-                Verify
+              <button
+                onClick={sendVerifyCode}
+                className={`flex-1 px-4 py-3 rounded-lg font-medium ${
+                  isVerified
+                    ? "bg-green-500 text-balck cursor-not-allowed"
+                    : "bg-blue-600 text-black"
+                }`}
+                disabled={isVerified} // 인증 완료 후 버튼 비활성화
+              >
+                {isVerified ? "✔" : "Verify"}
               </button>
             </div>
             {/* 비밀번호 입력 */}
@@ -124,6 +186,8 @@ export default function SignUpPage() {
               <input
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
@@ -139,6 +203,8 @@ export default function SignUpPage() {
               <input
                 type="nickname"
                 id="nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
                 placeholder="닉네임을 입력하세요"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
@@ -187,6 +253,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               className="w-full bg-blue-600 text-black font-semibold"
+              onClick={handleSignUp}
             >
               회원가입
             </button>
