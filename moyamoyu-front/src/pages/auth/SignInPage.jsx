@@ -1,11 +1,13 @@
 import axios from "@/config/axiosConfig";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/authStore";
 
 export default function SignInPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuthStore();
 
   const postSignIn = async (event) => {
     event.preventDefault();
@@ -14,14 +16,17 @@ export default function SignInPage() {
         email,
         password,
       });
-
-      console.log("로그인 성공 토큰 : ", response.data.data);
-      localStorage.setItem("accessToken", response.data.data);
-
-      navigate("/");
+      const token = response.data.data;
+      if (token) {
+        console.log("로그인 성공 토큰 : ", response.data.data);
+        login(token);
+        navigate("/");
+      } else {
+        throw "토큰의 값이 없습니다.";
+      }
     } catch (error) {
-      console.log("로그인 실패", error);
-      alert("로그인 실패 : 이메일 또는 비밀번호가 올바르지 않습니다.");
+      console.log("로그인 실패", error.response.data.message);
+      alert(`로그인 실패 : ${error.response.data.message}`);
       setPassword("");
     }
   };
@@ -108,12 +113,7 @@ export default function SignInPage() {
             <div className="text-center text-sm text-gray-600 mb-4">
               소셜 계정으로 로그인
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-sm font-medium text-gray-700">
-                  Google
-                </span>
-              </button>
+            <div className="grid gap-3">
               <button className="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                 <span className="text-sm font-medium text-gray-700">Naver</span>
               </button>
