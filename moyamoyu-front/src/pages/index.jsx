@@ -7,12 +7,12 @@ import axios from "@/config/axiosConfig";
 import GroupSlider from "@/components/ui/GroupSlider";
 
 function App() {
-  const [groupCards, setGroupCards] = useState([]);
+  const [moims, setMoims] = useState([]);
   useEffect(() => {
     const fetchCard = async () => {
       try {
         const response = await axios.get("/moims");
-        setGroupCards(response.data.data.content);
+        setMoims(response.data.data.content);
       } catch (error) {
         console.log("호출 실패", error);
       }
@@ -50,8 +50,8 @@ function App() {
             </p>
           </div>
           <div className="grid grid-cols-4 gap-6">
-            {groupCards.map((card) => (
-              <GroupCard key={card.id} data={card} />
+            {moims.map((moim) => (
+              <GroupCard key={moim.id} data={moim} />
             ))}
           </div>
         </div>

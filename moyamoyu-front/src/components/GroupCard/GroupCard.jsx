@@ -1,8 +1,15 @@
 import personImg from "@/assets/person.png";
 import categoryImg from "@/assets/category.png";
 import failImg from "@/assets/failImg.png";
+import { useNavigate } from "react-router";
 
 function GroupCard({ data }) {
+  const navigate = useNavigate();
+  const navDetailPage = () => {
+    console.log(data.moimId);
+    navigate(`/moims/detail/${data.moimId}`);
+  };
+
   if (!data) {
     return (
       <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-4 animate-pulse">
@@ -32,7 +39,10 @@ function GroupCard({ data }) {
   }
   data.coverImgUrl = data.coverImgUrl ? data.coverImgUrl : failImg;
   return (
-    <div className="bg-white border rounded-lg shadow p-4 flex flex-col gap-4">
+    <div
+      onClick={navDetailPage}
+      className="bg-white border rounded-lg shadow p-4 flex flex-col gap-4"
+    >
       {/* 상단 이미지 */}
       <div className="w-full h-60 rounded-xl mb-2">
         <img
