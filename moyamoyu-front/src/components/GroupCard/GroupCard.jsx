@@ -1,8 +1,8 @@
 import personImg from "@/assets/person.png";
 import categoryImg from "@/assets/category.png";
+import failImg from "@/assets/failImg.png";
 
 function GroupCard({ data }) {
-  const profileImg = null;
   if (!data) {
     return (
       <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-4 animate-pulse">
@@ -30,10 +30,16 @@ function GroupCard({ data }) {
       </div>
     );
   }
+  data.coverImgUrl = data.coverImgUrl ? data.coverImgUrl : failImg;
   return (
     <div className="bg-white border rounded-lg shadow p-4 flex flex-col gap-4">
       {/* 상단 이미지 */}
-      <div className="w-full h-60 border-2 rounded-xl border-solid mb-2"></div>
+      <div className="w-full h-60 rounded-xl mb-2">
+        <img
+          src={data.coverImgUrl}
+          className="w-full h-full object-cover"
+        ></img>
+      </div>
 
       {/* 그룹 아이콘 + 제목/설명 */}
       <div className="flex items-start gap-3">
@@ -65,4 +71,5 @@ function GroupCard({ data }) {
     </div>
   );
 }
+
 export { GroupCard };

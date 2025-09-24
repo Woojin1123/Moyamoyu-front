@@ -32,7 +32,7 @@ function App() {
               <h4 className="scroll-m-20 text-xl font-semibold">인기 모임</h4>
             </div>
             <p className="md:text-base text-muted-foreground">
-              가장 많은 사용자가 확인한 모임을 확인해보세요
+              가장 많은 사용자가 관심있어 하는 모임을 확인해보세요
             </p>
           </div>
           <GroupSlider />
