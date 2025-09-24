@@ -4,7 +4,7 @@ import axios from "@/config/axiosConfig";
 
 const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       accessToken: null,
       isLoggedIn: false,
 
@@ -25,6 +25,7 @@ const useAuthStore = create(
           set({ accessToken: null, isLoggedIn: false });
         }
       },
+      getAccessToken: () => get().accessToken,
     }),
     {
       name: "auth-storage", //

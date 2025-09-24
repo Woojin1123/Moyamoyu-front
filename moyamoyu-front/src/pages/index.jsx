@@ -2,8 +2,25 @@ import "@/pages/index.css";
 import { GroupCard } from "@/components/GroupCard";
 import hotImg from "@/assets/hot.png";
 import groupImg from "@/assets/groups.png";
+import { useEffect, useState } from "react";
+import axios from "@/config/axiosConfig";
+import GroupSlider from "@/components/ui/GroupSlider";
 
 function App() {
+  const [groupCards, setGroupCards] = useState([]);
+  useEffect(() => {
+    const fetchCard = async () => {
+      try {
+        const response = await axios.get("/moims");
+        setGroupCards(response.data.data.content);
+      } catch (error) {
+        console.log("호출 실패", error);
+      }
+    };
+
+    fetchCard();
+  }, []);
+
   return (
     <main className="flex-1 flex flex-col gap-10">
       <section>
@@ -18,13 +35,7 @@ function App() {
               가장 많은 사용자가 확인한 모임을 확인해보세요
             </p>
           </div>
-          <div className="grid grid-cols-5 gap-6">
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-          </div>
+          <GroupSlider />
         </div>
       </section>
       <section>
@@ -38,27 +49,10 @@ function App() {
               다양한 모임을 한눈에 확인해보세요!
             </p>
           </div>
-          <div className="grid grid-cols-5 gap-6">
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
-            <GroupCard />
+          <div className="grid grid-cols-4 gap-6">
+            {groupCards.map((card) => (
+              <GroupCard key={card.id} data={card} />
+            ))}
           </div>
         </div>
       </section>

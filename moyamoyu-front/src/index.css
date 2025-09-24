@@ -90,3 +90,8 @@ button:focus-visible {
     flex: 1;
   }
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #1a1a1a !important;
+}
