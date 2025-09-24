@@ -1,9 +1,13 @@
 import { Outlet } from "react-router";
+import { AppHeader } from "@/components/common";
 
 export default function AuthLayout() {
   return (
-    <main>
-      <Outlet />
-    </main>
+    <div>
+      <AppHeader />
+      <main>
+        <Outlet />
+      </main>
+    </div>
   );
 }
