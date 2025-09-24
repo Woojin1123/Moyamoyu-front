@@ -2,7 +2,6 @@ import axios from "@/config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
 
-
 function AppHeader() {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuthStore();
@@ -18,7 +17,7 @@ function AppHeader() {
   };
 
   return (
-    <header className="fixed top-0 z-10 w-full flex items-center justify-center bg-[#ADD8E6]">
+    <header className="fixed top-0 z-10 w-full flex items-center justify-center bg-white opacity-100">
       <div className="w-full max-w-[1328px] flex items-center justify-between px-6 py-3">
         {/* 로고 & 네비게이션 메뉴 UI */}
         <div className="flex items-center gap-5 ">
