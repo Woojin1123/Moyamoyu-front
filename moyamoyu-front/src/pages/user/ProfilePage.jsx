@@ -1,7 +1,7 @@
 import { AppSideBar } from "@/components/common";
 import { useEffect, useState } from "react";
 import axios from "@/config/axiosConfig";
-import personImg from "@/assets/person.png";
+import defaulProfile from "@/assets/defaultProfile.png";
 import CommonButton from "@/components/ui/CommonButton";
 
 export default function ProfilePage() {
@@ -27,7 +27,7 @@ export default function ProfilePage() {
           {/* 프로필 이미지 */}
           <div className="w-1/4 p-5">
             <img
-              src={userInfo.profileImg ? userInfo.profileImg : personImg}
+              src={userInfo.profileImg ? userInfo.profileImg : defaulProfile}
               className="w-full h-full rounded-full object-cover shadow-md"
             ></img>
           </div>
