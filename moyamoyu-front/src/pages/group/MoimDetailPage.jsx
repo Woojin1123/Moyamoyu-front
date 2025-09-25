@@ -77,7 +77,7 @@ export default function MoimDetailPage() {
             참가신청
           </button>
           <button
-            onClikc={handleFavorite}
+            onClick={handleFavorite}
             className="object-contain !bg-white !border-none mx-auto"
           >
             <img src={favoriteIcon} alt="좋아요" className="w-6 h-6" />

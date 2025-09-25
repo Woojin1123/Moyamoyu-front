@@ -25,8 +25,12 @@ export default function SignInPage() {
         throw "토큰의 값이 없습니다.";
       }
     } catch (error) {
-      console.log("로그인 실패", error.response.data.message);
-      alert(`로그인 실패 : ${error.response.data.message}`);
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "알 수 없는 오류가 발생했습니다.";
+
+      alert(`로그인 실패: ${message}`);
       setPassword("");
     }
   };
