@@ -8,6 +8,13 @@ function AppHeader() {
   const { isLoggedIn, logout } = useAuthStore();
   const location = useLocation();
 
+  const navMainPage = () => {
+    navigate("/");
+  };
+  const navProfilePage = () => {
+    navigate("/profile");
+  };
+
   const isAuthPage =
     location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
@@ -40,6 +47,13 @@ function AppHeader() {
       <div className="w-full max-w-[1328px] flex items-center justify-between px-6 py-3">
         {/* 로고 & 네비게이션 메뉴 UI */}
         <div className="flex items-center gap-5 ">
+          <div onClick={navMainPage}>
+            <img
+              src={logoImg}
+              className="h-10 w-auto object-contain cursor-pointer"
+            ></img>
+          </div>
+
           <div className="font-semibold text-black cursor-pointer hover:text-gray-300 duration-500">
             내 모임
           </div>
@@ -52,7 +66,10 @@ function AppHeader() {
         {isLoggedIn ? (
           <>
             <div className="flex gap-8">
-              <div className="font-semibold text-muted-foreground cursor-pointer hover:text-gray-300 duration-500">
+              <div
+                onClick={navProfilePage}
+                className="font-semibold text-muted-foreground cursor-pointer hover:text-gray-300 duration-500"
+              >
                 마이페이지
               </div>
               <span className="text-gray-400">|</span>

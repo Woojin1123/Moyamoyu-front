@@ -61,9 +61,16 @@ export default function MoimDetailPage() {
           </div>
         </div>
         {/* 모임 제목 */}
-        <h4 className="w-full text-left text-3xl font-bold ">{moim.name}</h4>
+        <div className="flex w-full">
+          <h4 className="flex-1 text-left p-2 text-3xl font-bold ">
+            {moim.name}
+          </h4>
+          <span className=" inline-block text-right p-2 text-xl font-bold border rounded-md">
+            {moim.memberCount} / {moim.capacity}
+          </span>
+        </div>
         {/* 설명 텍스트 */}
-        <div className="w-full min-h-[60vh] text-left text-xl border rounded-md mt-10 whitespace-pre-line">
+        <div className="w-full min-h-[30vh] text-left text-xl border rounded-md mt-10 whitespace-pre-line">
           {moim.description}
         </div>
       </div>
