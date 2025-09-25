@@ -15,21 +15,6 @@ function AppSideBar() {
   const handleClick = async (type) => {
     setModalTitle(type === "received" ? "받은 요청" : "신청 요청");
     setModalOpen(true);
-
-    try {
-      const url =
-        type === "received" ? "/join-requests/received" : "/join-requests/sent";
-      const response = await axios.get(url);
-      setRequests(response.data.data.content);
-      const totalElements = response.data.data.totalElements;
-      const totalPages = response.data.data.totalPages;
-      const pageNo = response.data.data.pageable.pageNumber;
-      setRequestPage({ pageNo, totalElements, totalPages });
-      console.log(requestPage);
-    } catch (err) {
-      console.error("API 호출 실패", err);
-      setRequests([{ message: "데이터를 불러올 수 없습니다." }]);
-    }
   };
 
   return (
@@ -54,8 +39,7 @@ function AppSideBar() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         title={modalTitle}
-        requests={requests}
-        page={requestPage}
+        type
       />
     </>
   );
