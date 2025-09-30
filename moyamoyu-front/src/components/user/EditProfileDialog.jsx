@@ -50,7 +50,7 @@ function EditProfileDialog({ userInfo, fetchUserInfo }) {
       toast.success("프로필이 성공적으로 수정되었습니다!");
     } catch (error) {
       console.log(error);
-      toast.error("서버 요청이 실패했습니다.");
+      toast.error(error.response?.data?.message || "서버 요청이 실패했습니다.");
     }
   };
 
@@ -141,7 +141,7 @@ function EditProfileDialog({ userInfo, fetchUserInfo }) {
                 setEditData((prev) => ({ ...prev, introduce: e.target.value }))
               }
               placeholder="자기소개를 입력하세요"
-              maxLength={200}
+              maxLength={220}
               className="min-h-40"
             />
           </div>

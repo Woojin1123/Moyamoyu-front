@@ -83,7 +83,7 @@ export default function SignUpPage() {
         navigate("/sign-in");
       }
     } catch (error) {
-      toast.error(`${error.response?.data?.message} || "회원가입 중 에러 발생`);
+      toast.error(error.response?.data?.message || "회원가입 중 에러 발생");
       console.log(error);
     }
   };
