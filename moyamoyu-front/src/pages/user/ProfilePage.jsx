@@ -37,7 +37,9 @@ export default function ProfilePage() {
               <div className="flex flex-col p-10 h-full gap-2">
                 <div className="text-2xl">{userInfo.nickname}</div>
                 <div>내 주소</div>
-                <div className="text-lg">{userInfo.fullAddress}</div>
+                <div className="text-lg">
+                  {userInfo.roadAddress} {userInfo.detailAddress}
+                </div>
                 <div>{userInfo.createdAt ? userInfo.createdAt : "없음"}</div>
                 <div className="mt-3">
                   <EditProfileDialog userInfo={userInfo} />
