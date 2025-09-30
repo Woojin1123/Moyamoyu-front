@@ -5,16 +5,16 @@ import defaulProfile from "@/assets/defaultProfile.png";
 import { EditProfileDialog } from "@/components/user";
 
 export default function ProfilePage() {
-  const [userInfo, setUserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get("/users/me");
+      setUserInfo(response.data.data);
+    } catch (error) {
+      console.log("내 정보 호출 실패", error);
+    }
+  };
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get("/users/me");
-        setUserInfo(response.data.data);
-      } catch (error) {
-        console.log("내 정보 호출 실패", error);
-      }
-    };
     fetchUserInfo();
   }, []);
 
@@ -42,7 +42,10 @@ export default function ProfilePage() {
                 </div>
                 <div>{userInfo.createdAt ? userInfo.createdAt : "없음"}</div>
                 <div className="mt-3">
-                  <EditProfileDialog userInfo={userInfo} />
+                  <EditProfileDialog
+                    userInfo={userInfo}
+                    fetchUserInfo={fetchUserInfo}
+                  />
                 </div>
               </div>
             </div>
