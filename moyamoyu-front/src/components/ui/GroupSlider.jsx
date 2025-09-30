@@ -1,9 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
+import { GroupCard } from "@/components/GroupCard";
 import "swiper/css";
 import "swiper/css/navigation";
-
-import { GroupCard } from "@/components/GroupCard"; // GroupCard 컴포넌트 import
 
 const GroupSlider = () => {
   return (
@@ -15,6 +14,20 @@ const GroupSlider = () => {
         loop={true}
         autoplay={{ delay: 3000 }}
         navigation
+        breakpoints={{
+          0: {
+            slidesPerView: 2,
+            spaceBetween: 40,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+        }}
       >
         <SwiperSlide>
           <GroupCard />

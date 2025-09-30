@@ -19,12 +19,12 @@ function AppHeader() {
     location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
   const handleLogout = async () => {
+    logout();
     try {
       await axios.post("/auth/logout");
     } catch (error) {
       console.log("로그아웃 실패", error.response.data.message);
     }
-    logout();
     window.location.href("/");
   };
   if (isAuthPage) {

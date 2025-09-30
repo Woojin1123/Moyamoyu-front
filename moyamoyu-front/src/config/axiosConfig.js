@@ -1,11 +1,11 @@
 import axios from "axios";
 import useAuthStore from "@/store/authStore";
 
-axios.defaults.baseURL = "http://localhost:8080/api";
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_API_URL;
 axios.defaults.withCredentials = true;
+const token = useAuthStore.getState().getAccessToken();
 
 axios.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().getAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

@@ -12,7 +12,7 @@ function GroupCard({ data }) {
 
   if (!data) {
     return (
-      <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-4 animate-pulse">
+      <div className="w-full min-w-[300px] bg-white rounded-lg shadow p-4 flex flex-col gap-4 animate-pulse">
         {/* 상단 이미지 */}
         <div className="w-full h-60 bg-gray-300 rounded mb-2"></div>
 

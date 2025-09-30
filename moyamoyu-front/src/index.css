@@ -24,12 +24,10 @@ a:hover {
 
 body {
   margin: 0;
-  /* 기존의 flex 관련 스타일 제거 또는 조건부 적용 */
   min-width: 320px;
   min-height: 100vh;
 }
 
-/* 특정 페이지에서만 중앙 정렬이 필요한 경우 */
 body.center-layout {
   display: flex;
   place-items: center;
