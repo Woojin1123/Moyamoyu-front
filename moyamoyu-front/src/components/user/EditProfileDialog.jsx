@@ -13,6 +13,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { toast } from "react-toastify";
 
 function EditProfileDialog({ userInfo, fetchUserInfo }) {
   const [editData, setEditData] = useState({});
@@ -46,8 +47,10 @@ function EditProfileDialog({ userInfo, fetchUserInfo }) {
       console.log("수정 성공");
       setOpen(false);
       fetchUserInfo();
+      toast.success("프로필이 성공적으로 수정되었습니다!");
     } catch (error) {
       console.log(error);
+      toast.error("서버 요청이 실패했습니다.");
     }
   };
 

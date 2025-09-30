@@ -1,24 +1,74 @@
 import axios from "@/config/axiosConfig";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function SignUpPage() {
+  // 회원가입 정보
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [checkPassword, setCheckPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [countdown, setCountdown] = useState(0);
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [code, setCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
 
+  // 검증용
+  const [isVerified, setIsVerified] = useState(false);
+  const [isPasswordChecked, setIsPasswordChecked] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [passwordValidError, setPasswordValidError] = useState("");
+  const [passwordCheckError, setPasswordCheckError] = useState("");
+
+  // 이메일, 비밀번호 정규식
+  const emailRegEx = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+  const passwordRegEx =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  // 로직
   const navigate = useNavigate();
+  const isValidEmail = (email) => {
+    return emailRegEx.test(email);
+  };
+  const validatePassword = (password) => {
+    if (!passwordRegEx.test(password)) {
+      setIsPasswordValid(false);
+      return setPasswordValidError(
+        "비밀번호는 최소 8자 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다."
+      );
+    }
+    setIsPasswordValid(true);
+    return setPasswordValidError("");
+  };
+  const validateCheckPassword = (checkPassword, password) => {
+    if (checkPassword && checkPassword !== password) {
+      setPasswordCheckError("비밀번호 확인이 일치하지 않습니다.");
+      setIsPasswordChecked(false);
+    } else if (checkPassword === password) {
+      setPasswordCheckError("");
+      setIsPasswordChecked(true);
+    }
+  };
 
   const handleSignUp = async () => {
     if (!isVerified) {
-      alert("인증을 완료해주세요.");
+      toast.error("이메일 인증을 완료해주세요");
       return;
     }
+    if (!isPasswordChecked || !isPasswordValid) {
+      toast.error("비밀번호를 확인해주세요");
+      return;
+    }
+    if (!nickname) {
+      toast.error("닉네임을 입력해주세요");
+      return;
+    }
+    if (!address) {
+      toast.error("주소를 입력해주세요");
+      return;
+    }
+
     try {
       const response = await axios.post("/auth/signup", {
         email,
@@ -33,6 +83,7 @@ export default function SignUpPage() {
         navigate("/sign-in");
       }
     } catch (error) {
+      toast.error(`${error.response?.data?.message} || "회원가입 중 에러 발생`);
       console.log(error);
     }
   };
@@ -128,8 +179,12 @@ export default function SignUpPage() {
                 type="email"
                 id="email"
                 placeholder="you@example.com"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
+                className={`flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200
+                  ${
+                    !email
+                      ? "border-red-500 focus:ring-red-600"
+                      : "border-lime-300"
+                  }`}
               />
               <button
                 type="button"
@@ -159,12 +214,11 @@ export default function SignUpPage() {
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="6자리 인증번호를 입력하세요"
                 disabled={isVerified}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
+                className="flex-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
               <button
                 onClick={sendVerifyCode}
-                className={`flex-1 px-4 py-3 rounded-lg font-medium ${
+                className={`w-30 px-4 py-3 rounded-lg font-medium ${
                   isVerified
                     ? "bg-green-500 text-balck cursor-not-allowed"
                     : "bg-blue-600 text-black"
@@ -186,13 +240,42 @@ export default function SignUpPage() {
                 type="password"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validatePassword(e.target.value);
+                  validateCheckPassword(checkPassword, e.target.value);
+                }}
                 placeholder="비밀번호"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
-                pattern=""
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                  !isPasswordValid || !isPasswordChecked
+                    ? "border-red-500 focus:ring-red-600"
+                    : "border-lime-300"
+                }`}
               />
             </div>
+            <div>
+              <input
+                type="password"
+                id="checkPassword"
+                value={checkPassword}
+                onChange={(e) => {
+                  setCheckPassword(e.target.value);
+                  validateCheckPassword(e.target.value, password);
+                }}
+                placeholder="비밀번호 확인"
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                  !isPasswordChecked || !isPasswordChecked
+                    ? "border-red-500 focus:ring-red-600"
+                    : "border-lime-300"
+                }`}
+              />
+            </div>
+            {passwordValidError && (
+              <p className="text-red-500 text-sm">{passwordValidError}</p>
+            )}
+            {passwordCheckError && (
+              <p className="text-red-500 text-sm">{passwordCheckError}</p>
+            )}
             <div>
               <label
                 htmlFor="nickname"
@@ -207,7 +290,6 @@ export default function SignUpPage() {
                 onChange={(e) => setNickname(e.target.value)}
                 placeholder="닉네임을 입력하세요"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
               />
             </div>
             <label
@@ -224,7 +306,6 @@ export default function SignUpPage() {
                 placeholder="도로명 주소"
                 className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 readOnly
-                required
               />
               <button type="button" onClick={handleAddressClick}>
                 주소 찾기

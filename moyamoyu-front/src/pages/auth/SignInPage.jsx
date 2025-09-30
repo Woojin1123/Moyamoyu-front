@@ -2,6 +2,7 @@ import axios from "@/config/axiosConfig";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function SignInPage() {
         console.log("로그인 성공 토큰 : ", response.data.data);
         login(token);
         navigate("/");
+        toast.success("로그인 성공");
       } else {
         throw "토큰의 값이 없습니다.";
       }
@@ -30,7 +32,7 @@ export default function SignInPage() {
         error?.message ||
         "알 수 없는 오류가 발생했습니다.";
 
-      alert(`로그인 실패: ${message}`);
+      toast.error(`로그인 실패: ${message}`);
       setPassword("");
     }
   };
@@ -58,7 +60,7 @@ export default function SignInPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   id="email"
-                  placeholder="you@example.com"
+                  placeholder="이메일"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   required
                 />
