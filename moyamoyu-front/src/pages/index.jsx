@@ -5,6 +5,7 @@ import groupImg from "@/assets/groups.png";
 import { useEffect, useState } from "react";
 import axios from "@/config/axiosConfig";
 import GroupSlider from "@/components/ui/GroupSlider";
+import { Button } from "@/components/ui/button";
 
 function App() {
   const [moims, setMoims] = useState([]);
