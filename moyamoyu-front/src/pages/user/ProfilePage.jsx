@@ -2,7 +2,7 @@ import { AppSideBar } from "@/components/common";
 import { useEffect, useState } from "react";
 import axios from "@/config/axiosConfig";
 import defaulProfile from "@/assets/defaultProfile.png";
-import CommonButton from "@/components/ui/CommonButton";
+import { EditProfileDialog } from "@/components/user";
 
 export default function ProfilePage() {
   const [userInfo, setUserInfo] = useState([]);
@@ -38,11 +38,9 @@ export default function ProfilePage() {
                 <div className="text-2xl">{userInfo.nickname}</div>
                 <div>내 주소</div>
                 <div className="text-lg">{userInfo.fullAddress}</div>
-                <div>
-                  {userInfo.createdAt ? userInfo.createdAt : "2022 - 10 - 10"}
-                </div>
+                <div>{userInfo.createdAt ? userInfo.createdAt : "없음"}</div>
                 <div className="mt-3">
-                  <CommonButton>내 정보 수정</CommonButton>
+                  <EditProfileDialog userInfo={userInfo} />
                 </div>
               </div>
             </div>

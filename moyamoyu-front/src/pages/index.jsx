@@ -1,5 +1,5 @@
 import "@/pages/index.css";
-import { GroupCard } from "@/components/GroupCard";
+import { GroupCard } from "@/components/groupCard";
 import hotImg from "@/assets/hot.png";
 import groupImg from "@/assets/groups.png";
 import { useEffect, useState } from "react";
@@ -50,7 +50,7 @@ function App() {
               다양한 모임을 한눈에 확인해보세요!
             </p>
           </div>
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
             {moims.map((moim) => (
               <GroupCard key={moim.id} data={moim} />
             ))}

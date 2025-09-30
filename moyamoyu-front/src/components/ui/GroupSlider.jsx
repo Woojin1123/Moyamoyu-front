@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-import { GroupCard } from "@/components/GroupCard";
+import { GroupCard } from "@/components/groupCard";
 import "swiper/css";
 import "swiper/css/navigation";
 
